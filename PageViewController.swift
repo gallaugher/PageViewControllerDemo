@@ -74,6 +74,7 @@ class PageViewController: UIPageViewController {
     func setUpListButton() {
         let buttonWidth = squareBarButtonSize // This will change
         let buttonHeight = squareBarButtonSize // UI Tweak, so the button is lined up with pageControl
+        
         listButton = UIButton(frame: CGRect(x: view.frame.width - buttonWidth, y: view.frame.height - buttonHeight, width: buttonWidth, height: buttonHeight))
         listButton.setImage(UIImage(named: "listIcon"), for: .normal)
         
