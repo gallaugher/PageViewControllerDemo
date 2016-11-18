@@ -76,8 +76,7 @@ class PageViewController: UIPageViewController {
         let buttonHeight = squareBarButtonSize // UI Tweak, so the button is lined up with pageControl
         
         listButton = UIButton(frame: CGRect(x: view.frame.width - buttonWidth, y: view.frame.height - buttonHeight, width: buttonWidth, height: buttonHeight))
-        listButton.setImage(UIImage(named: "listIcon"), for: .normal)
-        
+        listButton.setBackgroundImage(UIImage(named: "listIcon"), for: .normal)
         let highlightImage = UIImage(named: "listIcon")!.alpha(value: 0.3)
         listButton.setBackgroundImage(highlightImage, for: .highlighted)
         listButton.addTarget(self, action: #selector(segueToListViewController), for: .touchUpInside)
