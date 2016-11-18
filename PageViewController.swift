@@ -9,20 +9,26 @@
 //Apple iOS Weather app.  Weather and additional UI are not shown - focus is just on
 //implementing UIPageViewController.
 //
-//UIPageViewController adds a "Local" item as first item in a CitiesArray. ViewControllers
-//for Cities are instantiated as needed with CityViewController as the template, and via
-//the cityVCForPage method below.
-//New cities can be added (elements to the array) via the Cities button on the
-//CityPageViewController.  Segue to UITableViewController CityListViewController is
-//presented modally.
+//Logic for handling UIPageController is in PageViewController
+//Clicking the List icon in lower left will segue to the ListViewController.
+//The listButton is added to the UIPageController programatically, as is the
+//UIPageControl.  This should keep components independent so you can drop in your
+//own detail w/logic & UI handled independent of the PageViewController and ListController.
+//ListViewController is currently set up to prevent deletion and moving of the first
+//item, but this can be easily modified.
+
+//UIPageViewController adds a "Permenant" item as first item in a ListViewController,
+//but this can be easily modified.
+
+//DetailViewControllers are instantiated as needed, via the createDetailVC method.
+//New elements can be added (elements to the array) via the "+" button on the
+//DetailViewController.
 //
-//Clicking a row in CityListViewController will segue/unwind to CityViewController, then
-//segue/unwind to UIPageViewController (PageViewController), which handles the instantiation of
-//a page for the item clicked on, handles pageControl (the dots), and contains the
-//"before" and "after" methods that handle paging to the right & left.
-//
-//I'm still learning UIPageViewController & am certain there are better ways to implement
-//this. I'd welcome any suggestions, recommendations, or corrections.
+//Segue happens from PageViewController to ListViewController. Detail isn't aware that
+//these other ViewControllers exist. Clicking a row in the UITableView on the
+//ListViewController returns to the PageViewController which sets up UIPageControl and
+//the DetailViewController. Any interface updates can then be handled in DetailViewController.
+//I'd welcome any suggestions, recommendations, or corrections.
 //Thank you! john [dot] gallaugher [at] bc [dot] edu - Twitter: @gallaugher'
 
 
@@ -31,8 +37,13 @@ import UIKit
 
 class PageViewController: UIPageViewController {
     var pageControl: UIPageControl! // the "dots" at bottom that show current page among dots for each page
-    var citiesArray = ["Local City Weather"] // start with a single item in the array - eventually this'll be the local weather which cannot be deleted
+    
+    var listArray = ["Default Line: Can't Be Moved"] // start with a single item in the array - eventually this'll be the local weather which cannot be deleted
+    // Replace by calling any list setup logic for your app right here.
+    
     var currentPage: Int = 0
+    let squareBarButtonSize: CGFloat = 44 // Height of items in Toolbar area - pageControl & locationsListButton
+    var listButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,65 +51,71 @@ class PageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
-        // Apple's setViewControllers method takes an array of view controllers, with two passed if you are
-        // presenting two pages "book-style".  The Weather-app-like UI implemented here only takes one view controller
-        // at a time, but an array of just one element needs to be passed.
-        // .forward below doesn't really matter since it's the first page & there's no aninmation.
-        setViewControllers([cityVCForPage(0)], direction: .forward, animated: false, completion: nil)
+        setViewControllers([createDetailViewController(0)], direction: .forward, animated: false, completion: nil)
 
-        // Set up UIPageControl e.g. "the dots" showing current page & # of pages
-        // I couldn't get this to work through the interface builder, so I did it programatically
-        // Don't make width the entire width of the screen if you plan other UI elements (like the Cities button in
-        // this example) to sit to the right or left of the PageControl 'dots', otherwise these buttons or other UI
-        // elements won't fire when clicked.
-        let pageControlHeight: CGFloat = 50
-        let pageControlWidth: CGFloat = 170
+        setUpListButton()
+        setUpPageControl()
+    }
+    
+    // MARK: - Set Up UI Methods
+    func setUpPageControl() {
+        let pageControlHeight: CGFloat = squareBarButtonSize // Standard bar height
+        let pageControlWidth: CGFloat = 232 // 320 SE width - 44 x 2
         pageControl = UIPageControl(frame: CGRect(x: (view.frame.width - pageControlWidth)/2, y: view.frame.height - pageControlHeight, width: pageControlWidth, height: pageControlHeight))
         // Color set as lightGray. You'll certainly want to make it look prettier but
         // without this, indicators can't be seen on a default white background.
-        pageControl.backgroundColor = UIColor.lightGray
-        pageControl.numberOfPages = citiesArray.count
+        pageControl.pageIndicatorTintColor = UIColor.lightGray
+        pageControl.currentPageIndicatorTintColor = UIColor.black
+        pageControl.numberOfPages = listArray.count
         pageControl.currentPage = currentPage
         view.addSubview(pageControl)
-        
-        // Question: Should I break this out as a separate class for cleaner MVC? A singleton class for the pageControl?
     }
     
-
-    // When the user clicks a row in the CitiesArray shown in CityListViewController, this unwinds to CityViewController
-    // then directly unwinds to this UIPageViewController.
-    // Question: Is this a sound approach? I couldn't seem to unwind directly from CityListViewController, likely
-    // because the segue to this UITableView was triggered from a button on CityViewController.
-    @IBAction func unwindFromCityViewController(sender: UIStoryboardSegue) {
+    func setUpListButton() {
+        let buttonWidth = squareBarButtonSize // This will change
+        let buttonHeight = squareBarButtonSize // UI Tweak, so the button is lined up with pageControl
+        listButton = UIButton(frame: CGRect(x: view.frame.width - buttonWidth, y: view.frame.height - buttonHeight, width: buttonWidth, height: buttonHeight))
+        listButton.setImage(UIImage(named: "listIcon"), for: .normal)
         
-        // Identify the CityViewController we're unwinding from, set this VC to the constant 'controller',
-        // and use this to pass variables within the CityViewController to this UIPageViewController
-        let controller = sender.source as! CityViewController
-        currentPage = controller.currentPage
-        citiesArray = controller.citiesArray
-        
-        // Set page control variables (so dots show properly for any changes made/Cities added/removed using
-        // CityListViewController).
-        pageControl.numberOfPages = citiesArray.count
-        pageControl.currentPage = currentPage
-        
-        setViewControllers([cityVCForPage(currentPage)], direction: .forward, animated: false, completion: nil)
+        let highlightImage = UIImage(named: "listIcon")!.alpha(value: 0.3)
+        listButton.setBackgroundImage(highlightImage, for: .highlighted)
+        listButton.addTarget(self, action: #selector(segueToListViewController), for: .touchUpInside)
+        view.addSubview(listButton)
     }
     
-    fileprivate func cityVCForPage(_ inPage: Int) -> CityViewController {
+    //MARK: - Create Page Method
+    func createDetailViewController(_ inPage: Int) -> DetailViewController {
         
         // Update currentPage, which when called from 'viewControllerBefore' method below subtracts by one, or
         // when called from 'viewControllerAfter' method below, increases by one.
-        let currentPage = min(max(0, inPage), citiesArray.count-1)
+        let currentPage = min(max(0, inPage), listArray.count-1)
         
-        // the VCs for CityViewController aren't all created, one is simply instantiated as needed
-        let cityViewController = storyboard!.instantiateViewController(withIdentifier: "CityViewController") as! CityViewController
-        cityViewController.currentPage = currentPage
-        cityViewController.citiesArray = citiesArray
+        // the VCs for DetailViewController aren't all created, one is simply instantiated as needed
+        let detailViewController = storyboard!.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        detailViewController.currentPage = currentPage
+        detailViewController.listArray = listArray
         
-        // cityViewController.view.backgroundColor = UIColor.gray
-        
-        return cityViewController
+        return detailViewController
+    }
+    
+    //MARK: - Segue Methods
+    
+    func segueToListViewController(sender: UIButton!) {
+        performSegue(withIdentifier: "ToListViewController", sender: sender)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ToListViewController" {
+            let controller = segue.destination as! ListViewController
+            controller.listArray = listArray
+            controller.currentPage = currentPage
+        }
+    }
+    
+    @IBAction func unwindFromListViewController(sender: UIStoryboardSegue) {
+        pageControl.numberOfPages = listArray.count
+        pageControl.currentPage = currentPage
+        setViewControllers([createDetailViewController(currentPage)], direction: .forward, animated: false, completion: nil)
     }
 }
 
@@ -106,19 +123,19 @@ class PageViewController: UIPageViewController {
 // Standard methods for UIPageViewController protocol. Implemented as extensions just for organization purposes
 extension PageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if let currentViewController = viewController as? CityViewController {
-            if currentViewController.currentPage < citiesArray.count - 1 {
-                return cityVCForPage(currentViewController.currentPage + 1) // create the page you're headed to
+        if let currentViewController = viewController as? DetailViewController {
+            if currentViewController.currentPage < listArray.count - 1 {
+                return createDetailViewController(currentViewController.currentPage + 1) // create the page you're headed to
             }
         }
         return nil // this would happen if we were on the last page
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        // get the page# of the current page we're on. page is a property of CityViewController. It was set in func cityVCForPage
-        if let currentViewController = viewController as? CityViewController {
+        // get the page# of the current page we're on. page is a property of DetailViewController. It was set in func cityVCForPage
+        if let currentViewController = viewController as? DetailViewController {
             if currentViewController.currentPage > 0 {
-                return cityVCForPage(currentViewController.currentPage - 1) // create the page you're headed to
+                return createDetailViewController(currentViewController.currentPage - 1) // create the page you're headed to
             }
         }
         return nil // this would happen if we were on the first page
@@ -127,11 +144,11 @@ extension PageViewController: UIPageViewControllerDataSource {
     
     // MARK: - Methods for handling PageControl (current page indicator)
     func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-        return citiesArray.count
+        return listArray.count
     }
     
     func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
-        if let currentViewController = pageViewController.viewControllers?[0] as? CityViewController {
+        if let currentViewController = pageViewController.viewControllers?[0] as? DetailViewController {
             return currentViewController.currentPage
         }
         return 0
@@ -146,7 +163,7 @@ extension PageViewController: UIPageViewControllerDelegate {
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
         
-        if let currentViewController = pageViewController.viewControllers?[0] as? CityViewController {
+        if let currentViewController = pageViewController.viewControllers?[0] as? DetailViewController {
             pageControl.currentPage = currentViewController.currentPage
         }
     }

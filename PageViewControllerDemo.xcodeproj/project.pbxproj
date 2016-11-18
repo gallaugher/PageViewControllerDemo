@@ -7,17 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E839C9C1DD3EFBD0081086E /* CityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E839C9B1DD3EFBD0081086E /* CityListViewController.swift */; };
+		3E839C9C1DD3EFBD0081086E /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E839C9B1DD3EFBD0081086E /* ListViewController.swift */; };
 		3EA135A41DD394E200601A77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA135A31DD394E200601A77 /* AppDelegate.swift */; };
 		3EA135A91DD394E200601A77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EA135A71DD394E200601A77 /* Main.storyboard */; };
 		3EA135AB1DD394E200601A77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EA135AA1DD394E200601A77 /* Assets.xcassets */; };
 		3EA135AE1DD394E200601A77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EA135AC1DD394E200601A77 /* LaunchScreen.storyboard */; };
 		3EA135B61DD3952900601A77 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA135B51DD3952900601A77 /* PageViewController.swift */; };
-		3EA135BA1DD3979E00601A77 /* CityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA135B91DD3979E00601A77 /* CityViewController.swift */; };
+		3EA135BA1DD3979E00601A77 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA135B91DD3979E00601A77 /* DetailViewController.swift */; };
+		3EE371A31DDF4CA80028332D /* UIImage+Alpha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE371A21DDF4CA80028332D /* UIImage+Alpha.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3E839C9B1DD3EFBD0081086E /* CityListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityListViewController.swift; sourceTree = "<group>"; };
+		3E839C9B1DD3EFBD0081086E /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		3EA135A01DD394E200601A77 /* PageViewControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PageViewControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EA135A31DD394E200601A77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EA135A81DD394E200601A77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -25,7 +26,8 @@
 		3EA135AD1DD394E200601A77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3EA135AF1DD394E200601A77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EA135B51DD3952900601A77 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PageViewController.swift; path = ../PageViewController.swift; sourceTree = "<group>"; };
-		3EA135B91DD3979E00601A77 /* CityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityViewController.swift; sourceTree = "<group>"; };
+		3EA135B91DD3979E00601A77 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		3EE371A21DDF4CA80028332D /* UIImage+Alpha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Alpha.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,13 +62,14 @@
 			isa = PBXGroup;
 			children = (
 				3EA135B51DD3952900601A77 /* PageViewController.swift */,
+				3EA135B91DD3979E00601A77 /* DetailViewController.swift */,
+				3E839C9B1DD3EFBD0081086E /* ListViewController.swift */,
 				3EA135A31DD394E200601A77 /* AppDelegate.swift */,
 				3EA135A71DD394E200601A77 /* Main.storyboard */,
-				3EA135B91DD3979E00601A77 /* CityViewController.swift */,
-				3EA135AA1DD394E200601A77 /* Assets.xcassets */,
 				3EA135AC1DD394E200601A77 /* LaunchScreen.storyboard */,
+				3EA135AA1DD394E200601A77 /* Assets.xcassets */,
+				3EE371A21DDF4CA80028332D /* UIImage+Alpha.swift */,
 				3EA135AF1DD394E200601A77 /* Info.plist */,
-				3E839C9B1DD3EFBD0081086E /* CityListViewController.swift */,
 			);
 			path = PageViewControllerDemo;
 			sourceTree = "<group>";
@@ -146,8 +149,9 @@
 			files = (
 				3EA135A41DD394E200601A77 /* AppDelegate.swift in Sources */,
 				3EA135B61DD3952900601A77 /* PageViewController.swift in Sources */,
-				3EA135BA1DD3979E00601A77 /* CityViewController.swift in Sources */,
-				3E839C9C1DD3EFBD0081086E /* CityListViewController.swift in Sources */,
+				3EE371A31DDF4CA80028332D /* UIImage+Alpha.swift in Sources */,
+				3EA135BA1DD3979E00601A77 /* DetailViewController.swift in Sources */,
+				3E839C9C1DD3EFBD0081086E /* ListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

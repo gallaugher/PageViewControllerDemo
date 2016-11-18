@@ -12,15 +12,19 @@
         <!--Page View Controller-->
         <scene sceneID="cYw-SO-Qof">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" pageSpacing="20" navigationOrientation="horizontal" spineLocation="none" id="zmO-sz-xWU" customClass="PageViewController" customModule="JGPageViewControllerAttempt" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" pageSpacing="20" navigationOrientation="horizontal" spineLocation="none" id="zmO-sz-xWU" customClass="PageViewController" customModule="PageViewControllerDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="HBH-co-jnV" kind="presentation" identifier="ToListViewController" id="8Hu-8N-gyu"/>
+                    </connections>
+                </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="afO-34-onf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-50" y="21"/>
         </scene>
-        <!--City View Controller-->
+        <!--Detail View Controller-->
         <scene sceneID="kpc-pr-BP4">
             <objects>
-                <viewController storyboardIdentifier="CityViewController" id="pFu-FN-YO7" customClass="CityViewController" customModule="JGPageViewControllerAttempt" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailViewController" id="pFu-FN-YO7" customClass="DetailViewController" customModule="PageViewControllerDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gOv-8H-HQU"/>
                         <viewControllerLayoutGuide type="bottom" id="OYY-ti-UOb"/>
@@ -29,7 +33,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Weather for City:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ro1-jM-9ZI">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="--" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ro1-jM-9ZI">
                                 <rect key="frame" x="16" y="35" width="343" height="106"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -43,31 +47,22 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m95-ZI-zV4">
-                                <rect key="frame" x="320" y="629" width="39" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Cities"/>
-                                <connections>
-                                    <segue destination="HBH-co-jnV" kind="presentation" identifier="ToCityList" id="1Uv-z8-1yh"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="cityNumberLabel" destination="lHR-FK-S96" id="kYl-WU-0vn"/>
-                        <segue destination="Pjw-Ly-Oqb" kind="unwind" identifier="UnwindToPageViewController" unwindAction="unwindFromCityViewControllerWithSender:" id="wxJ-7a-Gdp"/>
+                        <outlet property="descriptionLabel" destination="Ro1-jM-9ZI" id="k39-52-KyI"/>
+                        <outlet property="listItemLabel" destination="lHR-FK-S96" id="fOo-5K-HrT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lkM-X5-ZQU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="Pjw-Ly-Oqb" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-50.399999999999999" y="692.20389805097454"/>
         </scene>
-        <!--City List View Controller-->
+        <!--List View Controller-->
         <scene sceneID="JjC-fc-gYp">
             <objects>
-                <viewController id="HBH-co-jnV" customClass="CityListViewController" customModule="JGPageViewControllerAttempt" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="HBH-co-jnV" customClass="ListViewController" customModule="PageViewControllerDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="m1S-fg-Tc7"/>
                         <viewControllerLayoutGuide type="bottom" id="1MN-VP-2cs"/>
@@ -82,13 +77,13 @@
                                 <items>
                                     <barButtonItem title="Edit" id="1z0-8I-mJU">
                                         <connections>
-                                            <action selector="editBarButtonPressed:" destination="HBH-co-jnV" id="TrI-pe-htR"/>
+                                            <action selector="editButtonPressed:" destination="HBH-co-jnV" id="79O-uB-OLK"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="H6b-Wd-BA9"/>
                                     <barButtonItem systemItem="add" id="4zZ-96-AnR">
                                         <connections>
-                                            <action selector="addCityButton:" destination="HBH-co-jnV" id="RGR-bX-TUl"/>
+                                            <action selector="addButtonPressed:" destination="HBH-co-jnV" id="ONK-NR-CH4"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -102,9 +97,12 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zJ8-9D-NAV" id="H7z-Bt-Pbi">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="n7a-Wu-2IE" kind="unwind" identifier="ToPageViewController" unwindAction="unwindFromListViewControllerWithSender:" id="rwH-3t-xb9"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -119,13 +117,12 @@
                         <outlet property="addBarButton" destination="4zZ-96-AnR" id="tB4-rP-1kJ"/>
                         <outlet property="editBarButton" destination="1z0-8I-mJU" id="Oxp-n3-a2N"/>
                         <outlet property="tableView" destination="hMk-rq-OQF" id="MHM-fI-R8N"/>
-                        <segue destination="n7a-Wu-2IE" kind="unwind" identifier="UnwindFromCitiesList" unwindAction="unwindToViewControllerWithSender:" id="99U-mg-dfe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="quJ-NW-eo3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="n7a-Wu-2IE" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="701.60000000000002" y="690.40479760119945"/>
+            <point key="canvasLocation" x="858" y="20"/>
         </scene>
     </scenes>
 </document>
